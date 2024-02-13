@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: employee-reviewsystem
 Domain Path: /languages
 */
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly      
+if (!defined('ABSPATH')) exit; // Exit if accessed directly      
 //require __DIR__ . '/vendor/autoload.php';
 ob_start();
 include_once('feedback.php');
@@ -272,7 +272,7 @@ function sendEmailtousers()
 	}
 	$table_name = $wpdb->prefix . 'feedback_para';
 	$results = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE post_id = %d", $post_id));
-	if (count($results) > 0) {
+	if ($results !== null && (is_array($results) || $results instanceof Countable) && count($results) > 0) {
 		$randomString = $results->token;
 	} else {
 		$wpdb->insert($table_name, array(
@@ -1114,7 +1114,10 @@ function get_tf_reviewsystem_header_logo()
 	if ($post->post_type == 'tf_reviewsystem') {
 		$tf_reviewsystem_id = $post->ID;
 		$header_image_id = get_post_meta($tf_reviewsystem_id, 'header_image_id', true);
-		return wp_get_attachment_image_src($header_image_id, 'full')[0];
+		$header_image_info = wp_get_attachment_image_src($header_image_id, 'full')[0] ?? null;
+		if (is_array($header_image_info)) {
+			return $header_image_info[0];
+		}
 	}
 }
 
@@ -1124,7 +1127,12 @@ function get_tf_reviewsystem_footer_logo()
 	if ($post->post_type == 'tf_reviewsystem') {
 		$tf_reviewsystem_id = $post->ID;
 		$footer_image_id = get_post_meta($tf_reviewsystem_id, 'footer_image_id', true);
-		return wp_get_attachment_image_src($footer_image_id, 'full')[0];
+		$footer_image_info =  wp_get_attachment_image_src($footer_image_id, 'full')[0] ?? null;
+		if (is_array($footer_image_info)) {
+			return $footer_image_info[0];
+		} else {
+			return $footer_image_info;
+		}
 	}
 }
 
@@ -1134,7 +1142,12 @@ function get_tf_reviewsystem_footer2_logo()
 	if ($post->post_type == 'tf_reviewsystem') {
 		$tf_reviewsystem_id = $post->ID;
 		$footer2_image_id = get_post_meta($tf_reviewsystem_id, 'footer2_image_id', true);
-		return wp_get_attachment_image_src($footer2_image_id, 'full')[0];
+		$footer2_image_id_info = wp_get_attachment_image_src($footer2_image_id, 'full')[0] ?? null;
+		if (is_array($footer2_image_id_info)) {
+			return $footer2_image_id_info[0];
+		} else {
+			return $footer2_image_id_info;
+		}
 	}
 }
 function get_tf_reviewsystem_fav_logo()
@@ -1143,7 +1156,12 @@ function get_tf_reviewsystem_fav_logo()
 	if ($post->post_type == 'tf_reviewsystem') {
 		$tf_reviewsystem_id = $post->ID;
 		$fav_image_id = get_post_meta($tf_reviewsystem_id, 'fav_image_id', true);
-		return wp_get_attachment_image_src($fav_image_id, 'full')[0];
+		$image_info = wp_get_attachment_image_src($fav_image_id, 'full');
+		if ($image_info && is_array($image_info)) {
+			return $image_info[0];
+		} else {
+			return ''; 
+		}
 	}
 }
 
@@ -2636,7 +2654,7 @@ function tf_reviewsystemgenrator()
 			}
 			register_activation_hook(__FILE__, 'tf_reviewsystem_activation_actions');
 
-			add_action('tf_reviewsystem_activation', '');
+			add_action('tf_reviewsystem_activation', 'tf_reviewsystem_options');
 
 			function tf_reviewsystem_options()
 			{
@@ -2878,7 +2896,7 @@ function tf_reviewsystemgenrator()
 							});
 						});
 					</script>
-				<?php
+			<?php
 				}
 			}
 			function dismis_error_notice()
