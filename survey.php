@@ -1,5 +1,5 @@
 <?php
- if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly      
+if (!defined('ABSPATH')) exit; // Exit if accessed directly      
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,9 +10,9 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title><?php the_title() ?></title>
-    <link href="<?php plugin_dir_url(__FILE__) . 'assets/css/style.css' ?>" rel="stylesheet">
-    <link href="<?php plugin_dir_url(__FILE__) . 'assets/css/bootstrap.min.css' ?>" rel="stylesheet">
-    <link href="<?php plugin_dir_url(__FILE__) . 'assets/css/frontform.css' ?>" rel="stylesheet">
+    <link href="<?php echo plugin_dir_url(__FILE__) . 'assets/css/style.css'; ?>" rel="stylesheet">
+    <link href="<?php echo plugin_dir_url(__FILE__) . 'assets/css/bootstrap.min.css'; ?>" rel="stylesheet">
+    <link href="<?php echo plugin_dir_url(__FILE__) . 'assets/css/frontform.css'; ?>" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
     <?php if (!empty(get_tf_reviewsystem_fav_logo())) { ?>
@@ -196,12 +196,17 @@ if ($datediff < 0) {
                     $questionlist = $result_para->questionlist;
                     $tf_reviewsystem_responces_table_name = $wpdb->prefix . 'tf_reviewsystem_responces';
                     //print_r($emp_id);
-                    $location_id = $result_para->location_id;
+                    if (property_exists($result_para, 'location_id')) {
+                        $location_id = $result_para->location_id;
+                    } else {
+                        // Handle the case where 'location_id' property is undefined
+                        $location_id = null; // or some default value
+                    }
                     $tf_reviewsystem_responces_query = "select * from $tf_reviewsystem_responces_table_name WHERE `review_by` LIKE '" . $emp_id . "' AND is_submitted=1";
                     $tf_reviewsystem_responces_res = $wpdb->get_results($tf_reviewsystem_responces_query);
                     //print_r($tf_reviewsystem_responces_res->is_submitted);
                     //echo "result = " . $tf_reviewsystem_responces_res;
-                   // print_r($tf_reviewsystem_responces_res);
+                    // print_r($tf_reviewsystem_responces_res);
                     if ($tf_reviewsystem_responces_res == 1) {
                         echo "<h2>You've Already Responded!</h2>";
                         echo "<h4>You can only respond once...</h4>";
@@ -228,7 +233,6 @@ if ($datediff < 0) {
                                         <p>Review By</p>
                                         <span>
                                             <?php
-
                                             $user_reviewbyname = get_user_by('id', $emp_id);
                                             echo  $user_reviewbyname->display_name; ?>
                                         </span>
@@ -283,11 +287,17 @@ if ($datediff < 0) {
                                 $questions_data = get_post_meta($question_id, 'questions', true);
                                 $department_id = get_post_meta($question_id, 'department', true);
                                 $img_id = get_post_meta($question_id, 'question_image', true);
-                                $src = wp_get_attachment_image_src($img_id, 'full')[0];
+                                $image_info = wp_get_attachment_image_src($img_id, 'full');
+                                if ($image_info && is_array($image_info)) {
+                                    $src = $image_info[0];
+                                }
                                 $currentimgid = $question_id;
                                 if (!isset($src) && empty($src)) {
                                     $img_id = get_post_meta($department_id, 'category_image', true);
-                                    $src = wp_get_attachment_image_src($img_id, 'full')[0];
+                                    $image_info = wp_get_attachment_image_src($img_id, 'full');
+                                    if ($image_info && is_array($image_info)) {
+                                        $src = $image_info[0];
+                                    }
                                     $currentimgid = $department_id;
                                 }
                                 $options = isset($questions_data['option']) && !empty($questions_data['option']) ? $questions_data['option'] : "";
@@ -335,13 +345,19 @@ if ($datediff < 0) {
                             $questions_data = get_post_meta($question_id, 'questions', true);
                             $department_id = get_post_meta($question_id, 'department', true);
                             $img_id = get_post_meta($question_id, 'question_image', true);
-                            $src = wp_get_attachment_image_src($img_id, 'full')[0];
+                            $image_info = wp_get_attachment_image_src($img_id, 'full');
+                            if ($image_info && is_array($image_info)) {
+                                $src = $image_info[0];
+                            }
 
                             $currentimgid = $question_id;
 
                             if (!isset($src) && empty($src)) {
                                 $img_id = get_post_meta($department_id, 'category_image', true);
-                                $src = wp_get_attachment_image_src($img_id, 'full')[0];
+                                $image_info = wp_get_attachment_image_src($img_id, 'full');
+                                if ($image_info && is_array($image_info)) {
+                                    $src = $image_info[0];
+                                }
                                 $currentimgid = $department_id;
                             }
 
@@ -423,29 +439,46 @@ if ($datediff < 0) {
                 $dynamic_theme_option_name = get_option('dynamic_theme_option_name');
 
                 if (empty($img_id)) {
-                    $img_id = $dynamic_theme_option_name['bg_image_0'];
+                    $bg_image = $dynamic_theme_option_name['bg_image_0'] ?? null;
+                    if (is_array($bg_image)) {
+                        $img_id = $bg_image[0] ?? null;
+                    }
                 }
-                $img_src = wp_get_attachment_image_src($img_id, 'full')[0];
+                $image_info = wp_get_attachment_image_src($img_id, 'full');
+                if (is_array($image_info) && isset($image_info[0])) {
+                    $img_src = $image_info[0];
+                }else{
+                    $img_src = '';
+                }
                 if ($img_src == '' || $img_src == null) {
                     $img_src = get_template_directory_uri() . '/images/back.jpg';
                 }
                 $button_bg_color = get_post_meta(get_the_ID(), 'button_bg_color', true);
                 if (empty($button_bg_color)) {
-                    $button_bg_color = $dynamic_theme_option_name['button_bg_color_0'];
+                    $bg_color_value = $dynamic_theme_option_name['button_bg_color_0'] ?? null;
+                    if (is_array($bg_color_value)) {
+                        $button_bg_color = $bg_color_value[0] ?? null;
+                    }
                 }
                 if ($button_bg_color == '' || $button_bg_color == null) {
                     $button_bg_color = '#365377';
                 }
                 $button_font_color = get_post_meta(get_the_ID(), 'button_font_color', true);
                 if (empty($button_font_color)) {
-                    $button_font_color = $dynamic_theme_option_name['button_font_color_0'];
+                    $button_font_color_info = $dynamic_theme_option_name['button_font_color_0'] ?? null;
+                    if (is_array($button_font_color_info)) {
+                        $button_font_color = $button_font_color_info[0] ?? null;
+                    }
                 }
                 if ($button_font_color == '' || $button_font_color == null) {
                     $button_font_color = '#fff';
                 }
                 $font_color = get_post_meta(get_the_ID(), 'font_color', true);
                 if (empty($font_color)) {
-                    $font_color = $dynamic_theme_option_name['font_color_0'];
+                    $font_color_info = $dynamic_theme_option_name['font_color_0'] ?? null;
+                    if (is_array($font_color_info)) {
+                        $font_color = $font_color_info[0] ?? null;
+                    }
                 }
                 if ($font_color == '' || $font_color == null) {
                     $font_color = '#000';
@@ -615,11 +648,11 @@ if ($datediff < 0) {
                                 }
                             }
                         });
-
                     }
                 }
             </script>
         </div>
     </body>
 <?php } ?>
+
 </html>

@@ -79,7 +79,7 @@ function create_questionnaire_tables()
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 		$sql = "CREATE TABLE " . $table_name . " ( id INT NOT NULL AUTO_INCREMENT, value TEXT NOT NULL, score TEXT NOT NULL, image TEXT, PRIMARY KEY  (id) ) " . $charset_collate . ";";
 		dbDelta($sql);
-	} 
+	}
 	$table_name = $wpdb->prefix . 'tf_reviewsystem_responces';
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 		$sql = "CREATE TABLE " . $table_name . " ( id INT NOT NULL AUTO_INCREMENT, tf_reviewsystem_id INT NOT NULL, company_id INT NOT NULL,location_id INT NOT NULL,review_for INT NOT NULL,review_by INT NOT NULL,`comments` longtext NOT NULL, is_offline BOOLEAN,datetime TIMESTAMP, PRIMARY KEY  (id) ) " . $charset_collate . ";";
@@ -93,7 +93,7 @@ function create_questionnaire_tables()
 }
 function UpdateOrCreateQuestion($post_id, $question)
 {
-	$question_id = $question['question_id'];
+	$question_id = isset($question->question_id);
 	global $wpdb;
 	$image = "";
 	if (isset($question['question']) && !empty($question['question'])) {
@@ -437,9 +437,21 @@ function getQuestionsByDepartment($department)
 			$postids[] = $value->ID;
 			$title = $value->post_title;
 			$questions_data = get_post_meta($value->ID, 'questions', true);
-			$options = isset(unserialize($questions_data)['option']) ? unserialize($questions_data)['option'] : "";
+			//$options = isset(unserialize($questions_data)['option']) ? unserialize($questions_data)['option'] : "";
+			$unserializedData = is_string($questions_data) ? unserialize($questions_data) : [];
+			$options = isset($unserializedData['option']) ? $unserializedData['option'] : "";
+
 			if (!empty($questions_data)) {
-				$questions_array = unserialize($questions_data);
+				if (is_string($questions_data)) {
+					$questions_array = unserialize($questions_data);
+					// Now $questions_array should be an array
+				} else {
+					// Handle the case where $questions_data is already an array
+					$questions_array = $questions_data;
+				}
+
+				// Now you can use $questions_array as an array
+
 				if (!empty($questions_array)) {
 					array_values($questions_array);
 					array_unshift($questions_array, "");
@@ -575,7 +587,12 @@ function questions_post_class_meta_box($questions)
 	if ($text_length == '') {
 		$text_length = 150;
 	}
-	$src = wp_get_attachment_image_src($img_id, 'full')[0];
+	$image_info = wp_get_attachment_image_src($img_id, 'full');
+	if (is_array($image_info) && isset($image_info[0])) {
+		$src = $image_info[0];
+	} else {
+		$src = '';
+	}
 	$question_languages = base64_encode(json_encode(getLanguages()));
 	$questions_count = 0;
 	//$questions_array = array();
@@ -604,9 +621,11 @@ function questions_post_class_meta_box($questions)
 						<input type="hidden" name="department" value="<?php $department ?>">
 						<i class="dropdown icon"></i>
 						<div class="default text">Select Department</div>
+
+
 						<div class="menu">
 							<?php foreach ($departments as $key => $value) { ?>
-								<div class="item" data-value="<?php $value->ID ?>"><?php $value->post_title ?></div>
+								<div class="item" data-value="<?php echo $value->ID; ?>"><?php echo $value->post_title ?></div>
 							<?php } ?>
 						</div>
 					</div>
@@ -636,7 +655,7 @@ function questions_post_class_meta_box($questions)
 									<div class="field">
 										<label>Type</label>
 										<div class="ui fluid search selection dropdown" id="questionstype">
-											<input name="questions[type]" type="hidden" value="<?php $questions_array['type'] ?>" required>
+											<input name="questions[type]" type="hidden" value="<?php echo isset($questions_array->type) ? htmlspecialchars($questions_array->type) : ''; ?>" required />
 											<i class="dropdown icon"></i>
 											<input class="search" autocomplete="off" tabindex="0">
 											<div class="default text">Type</div>
@@ -902,7 +921,7 @@ function Add_user_fields($user)
 						//get dropdown saved value
 						$selected = get_the_author_meta('user_department', $user->ID);
 						foreach ($departments as $key => $value) {
-						?><option value="<?php $value->ID ?>" <?php echo ($selected == $value->ID) ?  'selected="selected"' : '' ?>><?php $value->post_title ?></option>
+						?><option value="<?php $value->ID ?>" <?php echo ($selected == $value->ID) ?  'selected="selected"' : '' ?>><?php echo $value->post_title ?></option>
 						<?php } ?>
 					</select>
 				</td>
@@ -912,7 +931,7 @@ function Add_user_fields($user)
 	<?php
 	add_action('personal_options_update', 'save_user_fields');
 	add_action('edit_user_profile_update', 'save_user_fields');
-	
+
 	add_action('user_register', 'save_user_fields');
 	function save_user_fields($user_id)
 	{
@@ -924,8 +943,9 @@ function Add_user_fields($user)
 		//save dropdown
 		update_usermeta($user_id, 'user_department', $_POST['user_department']);
 	}
-	
-	function prevent_duplicate_departments($data, $postarr) {
+
+	function prevent_duplicate_departments($data, $postarr)
+	{
 		// Check if it's the right post type
 		if ($data['post_type'] == 'departments') {
 			// Check for duplicate title

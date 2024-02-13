@@ -154,6 +154,7 @@ function my_plugin_feedback_page_callback()
                         <!-- Populate this dropdown with your employee names dynamically or manually -->
                         <option value="">Select Employee</option>
                         <?php
+                            
                         foreach ($employelist as $employee) {
                             $emp_meta = get_user_meta($employee->ID);
                             $emp_name = $employee->display_name;
@@ -258,7 +259,6 @@ function my_plugin_feedback_page_callback()
                         isset($sumArray[$id]) || $sumArray[$id] = 0 || $sumArray[$id] = 0;
                         $sumArray[$id] += $value;
                         if ($value == 0 || $value == '') {
-
                             $cntZero_Arr[$id] += $cntZero;
                         } else {
                             $cntZero_Arr[$id] += 0;
@@ -281,6 +281,7 @@ function my_plugin_feedback_page_callback()
                 $unset_reviewer_name = $reviewer_data['reviewer'][$key];
                 unset($reviewer_data['reviewer'][$key]);
                 array_unshift($reviewer_data['reviewer'], $unset_reviewer_name);
+
 
             //   echo "<pre>";  echo $review_for;  print_r($reviewer_data); print_r($answer); print_r($question_data); die;
 
@@ -321,7 +322,6 @@ function my_plugin_feedback_page_callback()
                                         </thead>
                                         <tbody>
                                             <?php for ($l1 = 0; $l1 < count($answer[$r]); $l1++) {
-
                                             ?>
                                                 <tr>
                                                     <td class="center"><?php echo $answer[$r][$l1]; ?></td>
@@ -329,11 +329,8 @@ function my_plugin_feedback_page_callback()
                                             <?php  } ?>
                                         </tbody>
                                     </table>
-
                                 </td><?php } ?>
-
                             <td width="5%">
-
                                 <table class="fdtable">
                                     <thead class="thead-dark">
                                         <tr>
@@ -348,11 +345,8 @@ function my_plugin_feedback_page_callback()
                                         <?php  } ?>
                                     </tbody>
                                 </table>
-
                             </td>
-
                             <td width="5%">
-
                                 <table class="fdtable">
                                     <thead class="thead-dark">
                                         <tr>
