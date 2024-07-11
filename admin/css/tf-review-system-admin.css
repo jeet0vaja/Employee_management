@@ -1,0 +1,194 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+ .dropdown-section {
+    margin-top: 20px;
+}
+#search-form {
+  padding: 20px 6px;
+  border: 1px solid #e7e7e7;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+#search-form .col {
+  /* display: flex; */
+  align-items: center;
+}
+#search-form select {
+  width: 100%;
+  max-width: 73%;
+  min-height: 40px;
+}
+#search-form label {
+  margin-right: 10px;
+  display: flex;
+}
+
+.message-reason-late {
+  text-align: center;
+  transform: translateY(-10%);
+  width: 60%;
+  margin: 10% auto 0px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  padding: 40px 20px;
+}
+.message-reason {
+  text-align: center;
+  transform: translateY(-10%);
+  width: 60%;
+  margin: 10% auto 0px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  padding: 40px 20px;
+}
+.message-reason h2 {
+  color: #2271b1;
+  /* width: 70%; */
+  margin: 0px auto 10px;
+}
+.message-reason h4 {
+  font-weight: normal;
+  width: 95%;
+  word-break: break-word;
+  margin: 10px auto 10px;
+}
+.send_new_link {
+  background-color: #2271b1;
+  outline: none;
+  border: none;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+.column-tf_reviewsystemlocation {
+    display: flex;
+    flex-wrap: wrap;
+  }
+button.btn.success_link_green {
+    margin: 0px 1px 3px;
+    border-radius: 15px;
+    background: #fff;
+    padding: 2px 8px;
+    color: #007609;
+    border: 1px solid #007609;
+    display: flex;
+    width: fit-content;
+    line-height: 17px;
+    cursor: not-allowed;
+  }
+  button.btn.pending_link_red {
+    margin: 0px 1px 3px;
+    border-radius: 15px;
+    background: #fff;
+    padding: 2px 8px;
+    color: #c70303;
+    border: 1px solid #c70303;
+    display: flex;
+    width: fit-content;
+    cursor: not-allowed;
+    line-height: 17px;
+  }
+  .pending_link {
+    margin: 0px 1px 3px;
+    border-radius: 15px;
+    background: #fff;
+    padding: 2px 8px;
+    color: #005476;
+    border: 1px solid #005476;
+    display: flex;
+    width: fit-content;
+    cursor: pointer;
+  }
+  
+  .pending_link:hover {
+    background-color: #032a3a;
+    color: #fff;
+    cursor: pointer;
+  }
+  .column-tf_reviewsystemreview_for {
+    width: 10%;
+  }
+  .table-bordered tbody tr td table {
+    width: 100%;
+}
+
+.table-bordered tbody tr td table thead {
+    background-color: #62b5df;
+    color: #fff;
+}
+
+.table-bordered tbody tr td {
+    padding: 0px;
+}
+
+.table-bordered tbody tr td table tbody tr td,
+.table-bordered tbody tr td table thead tr th {
+    padding: 2px 8px;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+}
+
+.table-bordered tbody tr td table tr {
+    padding: 5px;
+    height: 30px;
+}
+
+.btn {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+#id_overall_graph_button {
+    margin-right: 7px;
+}
+
+span.reviewer_label {
+    font-size: 12px;
+}
+
+.table-bordered tbody tr td table thead tr th {
+    display: flex;
+    flex-direction: column;
+    height: 55px;
+}
+
+/* .table-bordered tbody tr td table tbody tr td:first-child{
+        width: 234px;
+    } */
+/* .question-table tbody tr td:first-child{
+        width: 208px;
+    } */
+
+.feedback_inner_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.feedback_inner_wrapper .form-group {
+    width: 33.33%;
+    margin-top: 21px;
+}
+
+.review_for {
+    width: 100%;
+}
+
+.submit-wrapper input.btn {
+    margin: 0px 3px;
+}
+
+.question-table tr.selected {
+    background-color: #d0e9c6 !important;
+}
+
+.other-questions tr.selected {
+    background-color: #d0e9c6 !important;
+}

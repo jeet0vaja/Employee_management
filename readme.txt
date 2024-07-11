@@ -1,38 +1,21 @@
-﻿=== Employee Review System Plugin ===
+=== Employee Review System ===
 Contributors: Techforce
 Donate link: https://techforceglobal.com/
 Tags: Employee Review System
 Requires at least: 6.0
-Tested up to: 6.3.2
+Tested up to: 6.5.5
 Stable tag: 1.0.0
-License: GNU General Public License v2 or later
-License URI:http://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+The Employee Review System is a highly efficient and user-friendly that helps team members provide feedback about each employees in an organisation.
 
 == Description ==
 
- Employee Review System created for employee performance. The employee review process should address concerns and feedback and offer both short and long-term goals. 
- The review process can help to determine salary adjustments, track whether or not progress was made, and address problems. 
+The Employee Review System is an advanced and intuitive WordPress plugin designed to enhance the feedback process within organizations. It enables team members to provide detailed evaluations of individual employees, thereby fostering a culture of transparency and continuous improvement. This plugin streamlines the review process by automatically distributing personalized review links to designated reviewers, who are tasked with assessing employees based on specific criteria. These criteria can be tailored to different departments, ensuring that the feedback is relevant and constructive. By integrating department-specific questions into the review process, the plugin allows for a more targeted and meaningful evaluation, reflecting the unique requirements and challenges of each department.
+
+Moreover, the Employee Review System allows administrators to assign users to specific departments, which simplifies the process of managing reviews and ensures that feedback is exchanged within relevant groups. This targeted approach not only enhances the relevance of the feedback but also increases the accountability of both reviewers and employees. The reviews can be customized to include annual performance metrics, contributing to a comprehensive understanding of each employee’s progress and areas for improvement. By facilitating a structured and department-focused review system, this plugin significantly contributes to improving employee performance and overall job satisfaction, ultimately benefiting the organization’s operational efficiency and success.
  
-#### Detailed Description: 
-
-Employee reviews are more than just a once-a-year meeting to go over an individual's performance. 
-There are advantages to these annual reviews that will impact your team members long after the meeting is over: 
-*Improved communication 
-*Employee engagement 
-*Professional development 
-*Skills growth
-Review System includes many modules where HR can add Years, Department and Questions from backend.
-Hr can create review from backend for specific employee and select peer reviwer so both can get the link in email 
-where reviwer and peer review fill the review form.
-After submit the review form Hr can see the status of review form and if someone not fill the form that employee name 
-shows in red color or if employee fill the form that shows in green color.
-If someone missing the form within date then link is expire so employee should give the missing reseaon then after 
-HR can generate new link for that perticular employee so he will able to submit form at the current date.
-After submit all peer review and reviwer form, HR can see each respone in Feedback module.
-On Feedback module there is score calculate and can see the average.
-also HR can add the final comment on Feedback results. 
-
 ### Video Embedding Service
 
 This plugin relies on an external service for video embedding, specifically YouTube and Vimeo. When you embed videos using this plugin, it makes requests to the respective video hosting services to retrieve the necessary embed code.
@@ -63,7 +46,6 @@ By installing and activating this plugin, you acknowledge and accept the use of 
 * Setting Page
 * Feedback Page
 
-
 == Installation ==
 
 ### Automatic installation
@@ -93,8 +75,9 @@ By installing and activating this plugin, you acknowledge and accept the use of 
 = 1.0.0 =
 * Initial release
 
-= 1.0.0 =
-
 == Upgrade Notice ==
-### 1.0.0 ###
+### 1.0.1 ###
 inittial release
+
+### 1.0.2 ###
+
